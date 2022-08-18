@@ -38,12 +38,14 @@ const Login = () => {
 
       setLoading(true);
       const resp = await login(data.username, data.password);
-      if (!resp) return toast.error("User not found");
+      if (!resp) return toast.error("Usuario no encontrado");
+
+      localStorage.setItem("token", resp);
 
       navigate("/");
     } catch (error) {
       console.error(error);
-      toast.error("User not found");
+      toast.error("Usuario no encontrado");
     } finally {
       setLoading(false);
     }
