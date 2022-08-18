@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import {
   Button,
   Card,
   Checkbox,
+  CircularProgress,
   FormControlLabel,
   FormGroup,
   Grid,
@@ -13,24 +16,36 @@ import {
 } from "@mui/material";
 import { LocalMall } from "@mui/icons-material";
 import Layout from "../components/atoms/Layout";
+import { login } from "../services/user";
 
 const Login = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [remember, setRemember] = useState(false);
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     username: "",
     password: "",
   });
 
-  const login = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSumbit = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
 
       setError(false);
       if (!data.username.trim() || !data.password.trim()) setError(true);
+
+      setLoading(true);
+      const resp = await login(data.username, data.password);
+      if (!resp) return toast.error("User not found");
+
+      navigate("/");
     } catch (error) {
       console.error(error);
+      toast.error("User not found");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -60,7 +75,7 @@ const Login = () => {
               </Grid>
 
               <Grid item>
-                <form onSubmit={login}>
+                <form onSubmit={handleSumbit}>
                   <Grid container direction="column" spacing={2}>
                     <Grid item>
                       <TextField
@@ -112,8 +127,16 @@ const Login = () => {
                       </FormGroup>
                     </Grid>
                     <Grid item textAlign="center">
-                      <Button type="submit" fullWidth variant="contained">
-                        Ingresar
+                      <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        disabled={loading}
+                        startIcon={
+                          loading ? <CircularProgress size={25} /> : null
+                        }
+                      >
+                        {loading ? "Validando" : "Ingresar"}
                       </Button>
                       <Typography variant="caption" color="GrayText">
                         ¿Aún no tienes una cuenta?{" "}
