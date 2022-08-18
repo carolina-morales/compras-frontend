@@ -23,7 +23,7 @@ const FormAddArticles: React.FC<FormAddArticlesProps> = ({ reload }) => {
 
       setLoading(true);
 
-      const resp = await saveArticle({ name: itemName, user: user._id });
+      const resp = await saveArticle({ name: itemName, user: user.user._id });
       if (!resp) return toast.error("No fue posible guardar el articulo");
 
       setItemName("");
