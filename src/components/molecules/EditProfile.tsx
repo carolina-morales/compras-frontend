@@ -31,7 +31,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ setOpen }) => {
       setError(false);
       if (!data.email.trim() && regexEmail.test(data.email)) setError(true);
 
-      const resp = await updateProfile(user.user._id, data);
+      const resp = await updateProfile(user.user._id || "", data);
       if (resp) return toast.success("Datos actualizados");
       return toast.error("No se pudo actualizar la información.");
     } catch (error) {

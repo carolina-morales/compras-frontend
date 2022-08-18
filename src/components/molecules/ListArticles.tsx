@@ -48,26 +48,32 @@ const ListArticles: React.FC<ListArticlesProps> = ({
 
   return (
     <List>
+      {/* 
+      // @ts-ignore */}
       <Container onDrop={onDrop}>
         {articles.map(({ _id, name }) => (
-          <Draggable key={_id}>
-            <ListItem divider>
-              <ListItemText primary={name} />
-              <ListItemSecondaryAction>
-                <ListItemIcon>
-                  <IconButton
-                    color="error"
-                    onClick={() => handleRemoveArticle(_id)}
-                  >
-                    <Delete />
-                  </IconButton>
-                  <IconButton>
-                    <DragHandle />
-                  </IconButton>
-                </ListItemIcon>
-              </ListItemSecondaryAction>
-            </ListItem>
-          </Draggable>
+          <>
+            {/* 
+          // @ts-ignore */}
+            <Draggable key={_id}>
+              <ListItem divider>
+                <ListItemText primary={name} />
+                <ListItemSecondaryAction>
+                  <ListItemIcon>
+                    <IconButton
+                      color="error"
+                      onClick={() => handleRemoveArticle(_id)}
+                    >
+                      <Delete />
+                    </IconButton>
+                    <IconButton>
+                      <DragHandle />
+                    </IconButton>
+                  </ListItemIcon>
+                </ListItemSecondaryAction>
+              </ListItem>
+            </Draggable>
+          </>
         ))}
       </Container>
     </List>
