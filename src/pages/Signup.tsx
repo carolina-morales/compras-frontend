@@ -13,16 +13,25 @@ import {
 } from "@mui/material";
 import { LocalMall } from "@mui/icons-material";
 import Layout from "../components/atoms/Layout";
-import { login } from "../services/user";
+import { create } from "../services/user";
+import { IUser } from "../utils/interfaces";
 
 const Login = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState({
+  const [data, setData] = useState<IUser>({
     username: "",
     password: "",
+    name: "",
+    lastName: "",
+    address: "",
+    city: "",
+    country: "",
+    phone: "",
+    email: "",
+    photo: "",
   });
 
   const handleSumbit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -33,12 +42,11 @@ const Login = () => {
       if (!data.username.trim() || !data.password.trim()) setError(true);
 
       setLoading(true);
-      const resp = await login(data.username, data.password);
-      if (!resp) return toast.error("Usuario no encontrado");
+      await create(data);
 
-      localStorage.setItem("token", resp);
+      toast.success("Cuenta creada");
 
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       console.error(error);
       toast.error("Usuario no encontrado");
@@ -64,10 +72,10 @@ const Login = () => {
 
               <Grid item marginBottom={2}>
                 <Typography variant="h3" fontWeight="bold">
-                  Iniciar sesión
+                  Crear cuenta
                 </Typography>
                 <Typography color="GrayText">
-                  Ingresa tus credenciales de acceso para comenzar a crear tu
+                  Ingresa tus datos para tener acceso y comenzar a registrar tu
                   lista de compras.
                 </Typography>
               </Grid>
@@ -75,6 +83,60 @@ const Login = () => {
               <Grid item>
                 <form onSubmit={handleSumbit}>
                   <Grid container direction="column" spacing={2}>
+                    <Grid item>
+                      <TextField
+                        fullWidth
+                        size="small"
+                        name="name"
+                        value={data.name}
+                        label="Nombre*"
+                        onChange={(e) =>
+                          setData({ ...data, name: e.target.value })
+                        }
+                        error={error && !data.name.trim()}
+                        helperText={
+                          error && !data.name.trim()
+                            ? "Campo obligatorio"
+                            : null
+                        }
+                      />
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        fullWidth
+                        size="small"
+                        name="lastName"
+                        value={data.lastName}
+                        label="Apellidos*"
+                        onChange={(e) =>
+                          setData({ ...data, lastName: e.target.value })
+                        }
+                        error={error && !data.lastName.trim()}
+                        helperText={
+                          error && !data.lastName.trim()
+                            ? "Campo obligatorio"
+                            : null
+                        }
+                      />
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        fullWidth
+                        size="small"
+                        name="email"
+                        value={data.email}
+                        label="Correo eléctronico*"
+                        onChange={(e) =>
+                          setData({ ...data, email: e.target.value })
+                        }
+                        error={error && !data.email.trim()}
+                        helperText={
+                          error && !data.email.trim()
+                            ? "Campo obligatorio"
+                            : null
+                        }
+                      />
+                    </Grid>
                     <Grid item>
                       <TextField
                         fullWidth
@@ -121,11 +183,11 @@ const Login = () => {
                           loading ? <CircularProgress size={25} /> : null
                         }
                       >
-                        {loading ? "Validando" : "Ingresar"}
+                        {loading ? "Validando" : "Crear cuenta"}
                       </Button>
                       <Typography variant="caption" color="GrayText">
-                        ¿Aún no tienes una cuenta?{" "}
-                        <Link to="/signup">Crea una</Link>
+                        ¿Ya tienes una cuenta?{" "}
+                        <Link to="/login">Inicia sesión</Link>
                       </Typography>
                     </Grid>
                   </Grid>

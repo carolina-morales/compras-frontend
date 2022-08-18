@@ -9,6 +9,11 @@ export const login = async (username: string, password: string) => {
   return resp.data;
 };
 
+export const create = async (user: Partial<IUser>) => {
+  const resp = await request.post("/user", user);
+  return resp.data;
+};
+
 export const updateProfile = async (id: string, user: IUser) => {
   const resp = await request.put(`/user/${id}`, user);
   return resp.data;
