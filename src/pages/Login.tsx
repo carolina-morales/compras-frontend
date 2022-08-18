@@ -100,6 +100,7 @@ const Login = () => {
                         name="password"
                         value={data.password}
                         label="Contraseña*"
+                        type="password"
                         onChange={(e) =>
                           setData({ ...data, password: e.target.value })
                         }
