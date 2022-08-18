@@ -30,7 +30,8 @@ const Home = () => {
     try {
       setLoading(true);
 
-      setArticles(await getArticles({ _id: user.user._id }));
+      // @ts-ignore
+      if (!user) setArticles(await getArticles({ _id: user?.user?._id || "" }));
     } catch (error) {
       console.error(error);
     } finally {

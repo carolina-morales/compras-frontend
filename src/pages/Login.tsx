@@ -38,7 +38,7 @@ const Login = () => {
 
       localStorage.setItem("token", resp);
 
-      navigate("/");
+      navigate("/home");
     } catch (error) {
       console.error(error);
       toast.error("Usuario no encontrado");
